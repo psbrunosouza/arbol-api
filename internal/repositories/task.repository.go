@@ -11,7 +11,8 @@ type TaskRepository interface {
 	Create(task *entities.Task) *gorm.DB
 	Delete(task *entities.Task) *gorm.DB
 	Find(task *entities.Task) *gorm.DB
-	Update(task *entities.Task) * gorm.DB
+	Update(task *entities.Task) *gorm.DB
+	MarkAsFavorite(task *entities.Task) *gorm.DB
 }
 
 type repository struct {
@@ -59,5 +60,13 @@ func (repository *repository) Update(task *entities.Task) *gorm.DB {
 	if result := repository.db.Save(task); result.Error != nil {
 		return result
 	}
+	return nil
+}
+
+func (repository *repository) MarkAsFavorite(task *entities.Task) *gorm.DB {
+	if result := repository.db.Model(task).Where("id = ?", task.Default.Id).Update("is_favorite", task.IsFavorite); result.Error != nil {
+		return result
+	}
+
 	return nil
 }

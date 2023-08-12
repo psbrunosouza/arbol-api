@@ -8,7 +8,7 @@ import (
 
 type Default struct {
 	Id        uint  `gorm:"primarykey"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
-	DeletedAt gorm.DeletedAt `json:"deletedAt" gorm:"index"`
+	CreatedAt *time.Time `json:"createdAt,omitempty" json:"createdAt"`
+	UpdatedAt *time.Time `json:"updatedAt,omitempty" json:"updatedAt"`
+	DeletedAt *gorm.DeletedAt `json:"deletedAt,omitempty" gorm:"index"`
 }

@@ -11,6 +11,7 @@ type TaskService interface {
 	FindTaskService(task *entities.Task) error
 	DeleteTaskService(task *entities.Task) error
 	UpdateTaskService(task *entities.Task) error
+	MarkTaskAsFavoriteService(task *entities.Task) error
 }
 
 type service struct {
@@ -54,6 +55,13 @@ func (service *service) DeleteTaskService(task *entities.Task) error {
 
 func (service *service) UpdateTaskService(task *entities.Task) error {
 	if result := service.repository.Update(task); result != nil && result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (service *service) MarkTaskAsFavoriteService(task *entities.Task) error {
+	if result := service.repository.MarkAsFavorite(task); result != nil && result.Error != nil {
 		return result.Error
 	}
 	return nil
