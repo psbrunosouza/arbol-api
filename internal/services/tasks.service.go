@@ -9,8 +9,8 @@ type TaskService interface {
 	ListTaskService(tasks *[]entities.Task) error
 	CreateTaskService(task *entities.Task) error
 	FindTaskService(task *entities.Task) error
-	// DeleteTaskService(task *entities.Task) error
-	// UpdateTaskService(task *entities.Task) error
+	DeleteTaskService(task *entities.Task) error
+	UpdateTaskService(task *entities.Task) error
 }
 
 type service struct {
@@ -40,6 +40,20 @@ func (service *service) CreateTaskService(task *entities.Task) error {
 
 func (service *service) FindTaskService(task *entities.Task) error {
 	if result := service.repository.Find(task); result != nil && result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (service *service) DeleteTaskService(task *entities.Task) error {
+	if result := service.repository.Delete(task); result != nil && result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (service *service) UpdateTaskService(task *entities.Task) error {
+	if result := service.repository.Update(task); result != nil && result.Error != nil {
 		return result.Error
 	}
 	return nil

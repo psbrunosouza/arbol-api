@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"loop-notes-api/internal/entities"
 	"loop-notes-api/internal/services"
 	"net/http"
@@ -13,6 +14,8 @@ type TasksController interface {
 	ListTaskController(context echo.Context) error
 	CreateTaskController(context echo.Context) error
 	FindTaskController(context echo.Context) error
+	UpdateTaskController(context echo.Context) error
+	DeleteTaskController(context echo.Context) error
 }
 
 type controller struct {
@@ -63,6 +66,52 @@ func (controller *controller) FindTaskController(context echo.Context) error {
 	}
 
 	if controllerError := controller.service.FindTaskService(task); controllerError != nil {
+		return context.JSON(http.StatusNotFound, echo.Map{"error": "Registro inexistente"})
+	}
+
+	return context.JSON(http.StatusOK, task)
+}
+
+func (controller *controller) DeleteTaskController(context echo.Context) error {
+	id, stringParseError := strconv.Atoi(context.Param("id"))
+
+	if stringParseError != nil {
+			return context.JSON(http.StatusBadRequest, echo.Map{"error": "Parâmetro de busca invalido ou fora do formato esperado"})
+	}
+	
+	task := &entities.Task{
+		Default: entities.Default{
+			Id: uint(id),
+		},
+	}
+
+	if controllerError := controller.service.FindTaskService(task); controllerError != nil {
+		return context.JSON(http.StatusNotFound, echo.Map{"error": "Registro inexistente"})
+	}
+
+	if controllerError := controller.service.DeleteTaskService(task); controllerError != nil {
+		return context.JSON(http.StatusNotFound, echo.Map{"error": "Registro inexistente"})
+	}
+
+	return context.JSON(http.StatusOK, nil)
+}
+
+func (controller *controller) UpdateTaskController(context echo.Context) error {
+	id, stringParseError := strconv.Atoi(context.Param("id"))
+
+	if stringParseError != nil {
+			return context.JSON(http.StatusBadRequest, echo.Map{"error": "Parâmetro de busca invalido ou fora do formato esperado"})
+	}
+	
+	task := &entities.Task{}
+
+	context.Bind(task)
+
+	task.Id = uint(id)
+
+	fmt.Print(task)
+
+	if controllerError := controller.service.UpdateTaskService(task); controllerError != nil {
 		return context.JSON(http.StatusNotFound, echo.Map{"error": "Registro inexistente"})
 	}
 

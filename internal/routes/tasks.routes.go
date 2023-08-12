@@ -17,4 +17,6 @@ func TasksRoutes(e *echo.Group) {
 	e.GET("/tasks", taskController.ListTasksController)
 	e.POST("/tasks", taskController.CreateTaskController)
 	e.GET("/tasks/:id", taskController.FindTaskController)
+	e.PUT("/tasks/:id", taskController.UpdateTaskController)
+	e.DELETE("/tasks/:id", taskController.DeleteTaskController)
 }

@@ -9,9 +9,9 @@ import (
 type TaskRepository interface {
 	List(tasks *[]entities.Task) *gorm.DB
 	Create(task *entities.Task) *gorm.DB
-	// Delete(task *entities.Task) *gorm.DB
+	Delete(task *entities.Task) *gorm.DB
 	Find(task *entities.Task) *gorm.DB
-	// Update(task *entities.Task) * gorm.DB
+	Update(task *entities.Task) * gorm.DB
 }
 
 type repository struct {
@@ -42,6 +42,21 @@ func (repository *repository) Create(task *entities.Task) *gorm.DB {
 
 func (repository *repository) Find(task *entities.Task) *gorm.DB {
 	if result := repository.db.First(task); result.Error != nil {
+		return result
+	}
+	return nil
+}
+
+func (repository *repository) Delete(task *entities.Task) *gorm.DB {
+	if result := repository.db.Delete(task); result.Error != nil {
+		return result
+	}
+	return nil
+}
+
+
+func (repository *repository) Update(task *entities.Task) *gorm.DB {
+	if result := repository.db.Save(task); result.Error != nil {
 		return result
 	}
 	return nil
