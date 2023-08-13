@@ -9,7 +9,7 @@ import (
 type Iteration struct {
 	Default
 	IsLoop          bool   `json:"isLoop,omitempty" gorm:"default:false;"`
-	IterationsSpace int    `json:"iterationsSpace,omitempty"`
+	IterationSpaceInDays int    `json:"iterationsSpace,omitempty"`
 	Tasks           []Task `json:"tasks,omitempty" gorm:"constraint:OnDelete:CASCADE;"`
 }
 
@@ -21,12 +21,12 @@ func (iteration *Iteration) BeforeCreate(db *gorm.DB) (err error) {
 		iteration.IsLoop = true
 	}
 
-	spaceInDays = iteration.IterationsSpace / len(iteration.Tasks)
+	spaceInDays = iteration.IterationSpaceInDays / len(iteration.Tasks)
 
 	currentTime := time.Now()
 	iterationDate = &currentTime
 
-	if iteration.IterationsSpace != 0 && iteration.IsLoop {
+	if iteration.IterationSpaceInDays != 0 && iteration.IsLoop {
 		for i := range iteration.Tasks {
 			if i == 0 {
 				taskIterationDate := time.Now()
@@ -41,4 +41,16 @@ func (iteration *Iteration) BeforeCreate(db *gorm.DB) (err error) {
 	}
 
 	return nil
+}
+
+func (iteration *Iteration) BeforeUpdate(db *gorm.DB) (err error) {
+	if !iteration.IsLoop {
+		for _, value := range iteration.Tasks {
+			if response := db.Delete(&value); response != nil && response.Error != nil {
+				return response.Error
+			}
+		}
+	}
+
+  return nil
 }

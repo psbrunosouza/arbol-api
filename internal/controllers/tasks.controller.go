@@ -10,8 +10,6 @@ import (
 )
 
 type TasksController interface {
-	ListTaskController(context echo.Context) error
-	FindTaskController(context echo.Context) error
 	UpdateTaskController(context echo.Context) error
 	MarkTaskAsFavoriteController(context echo.Context) error
 }
@@ -24,36 +22,6 @@ func NewTaskController(service services.TaskService) *controller {
 	return &controller{
 		service: service,
 	}
-}
-
-func (controller *controller) ListTasksController(context echo.Context) error {
-	var tasks []entities.Task
-
-	if err := controller.service.ListTaskService(&tasks); err != nil {
-		return context.JSON(http.StatusInternalServerError, echo.Map{"error": err.Error()})
-	}
-
-	return context.JSON(http.StatusOK, tasks)
-}
-
-func (controller *controller) FindTaskController(context echo.Context) error {
-	id, stringParseError := strconv.Atoi(context.Param("id"))
-
-	if stringParseError != nil {
-			return context.JSON(http.StatusBadRequest, echo.Map{"error": "Parâmetro de busca invalido ou fora do formato esperado"})
-	}
-	
-	task := &entities.Task{
-		Default: entities.Default{
-			Id: uint(id),
-		},
-	}
-
-	if controllerError := controller.service.FindTaskService(task); controllerError != nil {
-		return context.JSON(http.StatusNotFound, echo.Map{"error": "Registro inexistente"})
-	}
-
-	return context.JSON(http.StatusOK, task)
 }
 
 func (controller *controller) UpdateTaskController(context echo.Context) error {

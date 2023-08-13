@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	"loop-notes-api/internal/entities"
 
 	"gorm.io/gorm"
@@ -56,7 +57,9 @@ func (repository *iterationRepository) DeleteIterationRepository(iteration *enti
 
 
 func (repository *iterationRepository) UpdateIterationRepository(iteration *entities.Iteration) *gorm.DB {
-	if result := repository.db.Save(iteration); result.Error != nil {
+	fmt.Print(iteration)
+	
+	if result := repository.db.Save(iteration);  result.Error != nil {
 		return result
 	}
 	return nil

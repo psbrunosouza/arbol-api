@@ -14,8 +14,6 @@ func TasksRoutes(e *echo.Group) {
 	taskService := services.NewTaskService(taskRepository)
 	taskController := controllers.NewTaskController(taskService)
 
-	e.GET("/tasks", taskController.ListTasksController)
-	e.GET("/tasks/:id", taskController.FindTaskController)
 	e.PUT("/tasks/:id", taskController.UpdateTaskController)
 	e.PATCH("/tasks/mark-as-favorite/:id", taskController.MarkTaskAsFavoriteController)
 }

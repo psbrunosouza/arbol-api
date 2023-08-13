@@ -7,8 +7,6 @@ import (
 )
 
 type TaskRepository interface {
-	ListTasksRepository(tasks *[]entities.Task) *gorm.DB
-	FindTaskRepository(task *entities.Task) *gorm.DB
 	UpdateTaskRepository(task *entities.Task) *gorm.DB
 	MarkTaskAsFavorite(task *entities.Task) *gorm.DB
 }
@@ -22,22 +20,6 @@ func NewTaskRepository(db *gorm.DB) *taskRepository {
 		db: db,
 	}
 } 
-
-func (repository *taskRepository) ListTasksRepository(tasks *[]entities.Task) *gorm.DB {
-	result := repository.db.Find(tasks)
-	if result.Error != nil {
-		return result
-	}
-	return nil
-}
-
-
-func (repository *taskRepository) FindTaskRepository(task *entities.Task) *gorm.DB {
-	if result := repository.db.First(task); result.Error != nil {
-		return result
-	}
-	return nil
-}
 
 func (repository *taskRepository) UpdateTaskRepository(task *entities.Task) *gorm.DB {
 	if result := repository.db.Save(task); result.Error != nil {

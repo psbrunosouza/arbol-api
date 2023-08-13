@@ -6,8 +6,6 @@ import (
 )
 
 type TaskService interface {
-	ListTaskService(tasks *[]entities.Task) error
-	FindTaskService(task *entities.Task) error
 	UpdateTaskService(task *entities.Task) error
 	MarkTaskAsFavoriteService(task *entities.Task) error
 }
@@ -20,20 +18,6 @@ func NewTaskService(repository repositories.TaskRepository) *taskService{
 	return &taskService{
 		repository: repository,
 	}	
-}
-
-func (service *taskService) ListTaskService(tasks *[]entities.Task) error {
-	if result := service.repository.ListTasksRepository(tasks); result != nil && result.Error != nil {
-		return result.Error
-	}
-	return nil
-}
-
-func (service *taskService) FindTaskService(task *entities.Task) error {
-	if result := service.repository.FindTaskRepository(task); result != nil && result.Error != nil {
-		return result.Error
-	}
-	return nil
 }
 
 func (service *taskService) UpdateTaskService(task *entities.Task) error {
