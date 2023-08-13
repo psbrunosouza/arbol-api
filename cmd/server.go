@@ -5,6 +5,7 @@ import (
 	"loop-notes-api/internal/databases"
 	"loop-notes-api/internal/entities"
 	"loop-notes-api/internal/routes"
+	"loop-notes-api/internal/seeds"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -19,7 +20,10 @@ func init() {
 	databases.InitPgGorm(
 		&entities.Task{},
 		&entities.Iteration{},
+		&entities.Status{},
 	)
+
+	seeds.Init()
 }
 
 func main() {
