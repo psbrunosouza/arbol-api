@@ -8,9 +8,9 @@ import (
 
 type IterationRepository interface {
 	ListIterationsRepository(iterations *[]entities.Iteration) *gorm.DB
+	FindIterationRepository(iteration *entities.Iteration) *gorm.DB
 	CreateIterationRepository(iteration *entities.Iteration) *gorm.DB
 	DeleteIterationRepository(iteration *entities.Iteration) *gorm.DB
-	FindIterationRepository(iteration *entities.Iteration) *gorm.DB
 	UpdateIterationRepository(iteration *entities.Iteration) *gorm.DB
 }
 

@@ -92,7 +92,7 @@ func (controller *iterationsController) DeleteIterationController(context echo.C
 		return context.JSON(http.StatusNotFound, echo.Map{"error": "Registro inexistente"})
 	}
 
-	return context.JSON(http.StatusOK, nil)
+	return context.JSON(http.StatusOK, echo.Map{})
 }
 
 func (controller *iterationsController) UpdateIterationController(context echo.Context) error {

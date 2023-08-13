@@ -11,7 +11,7 @@ type Task struct {
 	IsFavorite    bool   `json:"isFavorite" gorm:"default:false"`
 	NextIteration *time.Time `json:"nextIteration,omitempty" gorm:"default:null;"`
 	IterationID 	int `json:"iterationId,omitempty" gorm:"default:null;"`
-  Iteration   	*Iteration `json:"iteration,omitempty" gorm:"default:null;"`
+  Iteration   	*Iteration `json:"iteration,omitempty" gorm:"default:null;constraint:OnDelete:CASCADE;"`
 	StatusID 			int	`json:"statusId,omitempty" gorm:"default:null;"`
 	Status 				*Status `json:"status,omitempty" gorm:"default:null;"`
 }
