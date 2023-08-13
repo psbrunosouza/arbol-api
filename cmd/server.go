@@ -18,6 +18,7 @@ func init() {
 
 	databases.InitPgGorm(
 		&entities.Task{},
+		&entities.Iteration{},
 	)
 }
 
@@ -27,6 +28,7 @@ func main() {
 	api := echo.Group("/v1")
 
 	routes.TasksRoutes(api)
+	routes.IterationRoutes(api)
 
 	echo.Logger.Fatal(echo.Start(os.Getenv("PORT")))
 }

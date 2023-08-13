@@ -14,54 +14,54 @@ type TaskService interface {
 	MarkTaskAsFavoriteService(task *entities.Task) error
 }
 
-type service struct {
+type taskService struct {
 	repository repositories.TaskRepository
 }
 
-func NewTaskService(repository repositories.TaskRepository) *service{
-	return &service{
+func NewTaskService(repository repositories.TaskRepository) *taskService{
+	return &taskService{
 		repository: repository,
 	}	
 }
 
-func (service *service) ListTaskService(tasks *[]entities.Task) error {
-	if result := service.repository.List(tasks); result != nil && result.Error != nil {
+func (service *taskService) ListTaskService(tasks *[]entities.Task) error {
+	if result := service.repository.ListTasksRepository(tasks); result != nil && result.Error != nil {
 		return result.Error
 	}
 	return nil
 }
 
-func (service *service) CreateTaskService(task *entities.Task) error {
-	if result := service.repository.Create(task); result != nil && result.Error != nil {
+func (service *taskService) CreateTaskService(task *entities.Task) error {
+	if result := service.repository.CreateTaskRepository(task); result != nil && result.Error != nil {
 		return result.Error
 	}
 	return nil
 }
 
 
-func (service *service) FindTaskService(task *entities.Task) error {
-	if result := service.repository.Find(task); result != nil && result.Error != nil {
+func (service *taskService) FindTaskService(task *entities.Task) error {
+	if result := service.repository.FindTaskRepository(task); result != nil && result.Error != nil {
 		return result.Error
 	}
 	return nil
 }
 
-func (service *service) DeleteTaskService(task *entities.Task) error {
-	if result := service.repository.Delete(task); result != nil && result.Error != nil {
+func (service *taskService) DeleteTaskService(task *entities.Task) error {
+	if result := service.repository.DeleteTaskRepository(task); result != nil && result.Error != nil {
 		return result.Error
 	}
 	return nil
 }
 
-func (service *service) UpdateTaskService(task *entities.Task) error {
-	if result := service.repository.Update(task); result != nil && result.Error != nil {
+func (service *taskService) UpdateTaskService(task *entities.Task) error {
+	if result := service.repository.UpdateTaskRepository(task); result != nil && result.Error != nil {
 		return result.Error
 	}
 	return nil
 }
 
-func (service *service) MarkTaskAsFavoriteService(task *entities.Task) error {
-	if result := service.repository.MarkAsFavorite(task); result != nil && result.Error != nil {
+func (service *taskService) MarkTaskAsFavoriteService(task *entities.Task) error {
+	if result := service.repository.MarkTaskAsFavorite(task); result != nil && result.Error != nil {
 		return result.Error
 	}
 	return nil
