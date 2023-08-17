@@ -8,6 +8,7 @@ import (
 type TaskService interface {
 	UpdateTaskService(task *entities.Task) error
 	MarkTaskAsFavoriteService(task *entities.Task) error
+	CreateTaskService(task *entities.Task) error
 }
 
 type taskService struct {
@@ -29,6 +30,13 @@ func (service *taskService) UpdateTaskService(task *entities.Task) error {
 
 func (service *taskService) MarkTaskAsFavoriteService(task *entities.Task) error {
 	if result := service.repository.MarkTaskAsFavorite(task); result != nil && result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (service *taskService) CreateTaskService(task *entities.Task) error {
+	if result := service.repository.CreateTaskRepository(task); result != nil && result.Error != nil {
 		return result.Error
 	}
 	return nil

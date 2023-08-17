@@ -9,11 +9,11 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func TasksRoutes(e *echo.Group) {
+func TasksRoutes(echo *echo.Group) {
 	taskRepository := repositories.NewTaskRepository(databases.Database)
 	taskService := services.NewTaskService(taskRepository)
 	taskController := controllers.NewTaskController(taskService)
 
-	e.PUT("/tasks/:id", taskController.UpdateTaskController)
-	e.PATCH("/tasks/mark-as-favorite/:id", taskController.MarkTaskAsFavoriteController)
+	echo.PUT("/tasks/:id", taskController.UpdateTaskController)
+	echo.PATCH("/tasks/mark-as-favorite/:id", taskController.MarkTaskAsFavoriteController)
 }

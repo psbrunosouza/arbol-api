@@ -9,6 +9,7 @@ import (
 type TaskRepository interface {
 	UpdateTaskRepository(task *entities.Task) *gorm.DB
 	MarkTaskAsFavorite(task *entities.Task) *gorm.DB
+	CreateTaskRepository(task *entities.Task) *gorm.DB
 }
 
 type taskRepository struct {
@@ -22,16 +23,13 @@ func NewTaskRepository(db *gorm.DB) *taskRepository {
 } 
 
 func (repository *taskRepository) UpdateTaskRepository(task *entities.Task) *gorm.DB {
-	if result := repository.db.Save(task); result.Error != nil {
-		return result
-	}
-	return nil
+	return repository.db.Save(task)
 }
 
 func (repository *taskRepository) MarkTaskAsFavorite(task *entities.Task) *gorm.DB {
-	if result := repository.db.Model(task).Where("id = ?", task.Default.Id).Update("is_favorite", task.IsFavorite); result.Error != nil {
-		return result
-	}
+	return repository.db.Model(task).Where("id = ?", task.Default.Id).Update("is_favorite", task.IsFavorite)
+}
 
-	return nil
+func (reposity *taskRepository) CreateTaskRepository(task *entities.Task) *gorm.DB {
+	return reposity.db.Create(task)
 }

@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"loop-notes-api/internal/entities"
 
 	"gorm.io/gorm"
@@ -26,41 +25,30 @@ func NewIterationRepository(db *gorm.DB) *iterationRepository {
 } 
 
 func (repository *iterationRepository) ListIterationsRepository(iterations *[]entities.Iteration) *gorm.DB {
-	result := repository.db.Preload("Tasks").Find(iterations)
-	if result.Error != nil {
-		return result
-	}
-	return nil
+	return repository.db.Preload("Tasks").Find(iterations)
 }
 
 func (repository *iterationRepository) CreateIterationRepository(iteration *entities.Iteration) *gorm.DB {
-	if result := repository.db.Create(iteration); result.Error != nil {
-		return result
-	}
-	return nil
+	return repository.db.Create(iteration)
 }
 
-
 func (repository *iterationRepository) FindIterationRepository(iteration *entities.Iteration) *gorm.DB {
-	if result := repository.db.Preload("Tasks").First(iteration); result.Error != nil {
-		return result
-	}
-	return nil
+	return repository.db.Preload("Tasks").First(iteration)
 }
 
 func (repository *iterationRepository) DeleteIterationRepository(iteration *entities.Iteration) *gorm.DB {
-	if result := repository.db.Delete(iteration); result.Error != nil {
-		return result
-	}
-	return nil
+	return repository.db.Delete(iteration)
 }
 
 
 func (repository *iterationRepository) UpdateIterationRepository(iteration *entities.Iteration) *gorm.DB {
-	fmt.Print(iteration)
-	
-	if result := repository.db.Save(iteration);  result.Error != nil {
-		return result
+	iterationMapped := map[string]interface{}{
+		"IsLoop": iteration.IsLoop,
 	}
-	return nil
+
+	result := repository.db.Model(iteration).Where("id = ?", iteration.Id).Updates(iteration).First(iteration)
+
+	result = repository.db.Model(iteration).Where("id = ?", iteration.Id).Updates(iterationMapped).First(iteration)
+	
+	return result
 }
