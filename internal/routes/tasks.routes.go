@@ -16,4 +16,5 @@ func TasksRoutes(echo *echo.Group) {
 
 	echo.PUT("/tasks/:id", taskController.UpdateTaskController)
 	echo.PATCH("/tasks/mark-as-favorite/:id", taskController.MarkTaskAsFavoriteController)
+	echo.POST("/tasks", taskController.CreateTaskController)
 }

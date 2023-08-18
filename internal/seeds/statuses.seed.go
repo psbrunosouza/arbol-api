@@ -21,7 +21,6 @@ func NewStatusSeedDatabase(db *gorm.DB) *statusSeedDatabase {
 }
 
 func (statusSeedDatabase *statusSeedDatabase) StatusSeed() error {
-
 	statuses := []entities.Status{
 		{
 			Description: "progress",
@@ -31,25 +30,17 @@ func (statusSeedDatabase *statusSeedDatabase) StatusSeed() error {
 		},
 	}
 
-	var seedDatabaseError error
+	for _, status := range statuses {
+		rawStatus := entities.Status{}
 
+		if result := statusSeedDatabase.database.Where("description = ?", status.Description).First(&rawStatus); result.Error == nil {
+			return nil
+		}
 
-
-for _, status := range statuses {
-		var existingStatus entities.Status
-
-		result := statusSeedDatabase.database.Where("description = ?", status.Description).First(&existingStatus)
-		if result.Error != nil {
-			if result.Error == gorm.ErrRecordNotFound {
-				if createResult := statusSeedDatabase.database.Create(&status); createResult.Error != nil {
-					seedDatabaseError = createResult.Error
-				}
-			} else {
-				seedDatabaseError = result.Error
-			}
+		if result := statusSeedDatabase.database.Create(&status); result.Error != nil {
+			return result.Error
 		}
 	}
 
-
-	return seedDatabaseError
+	return nil
 }

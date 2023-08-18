@@ -18,9 +18,10 @@ func init() {
 	}
 
 	databases.InitPgGorm(
+		&entities.Status{},
+		&entities.Score{},
 		&entities.Task{},
 		&entities.Iteration{},
-		&entities.Status{},
 	)
 
 	seeds.Init()

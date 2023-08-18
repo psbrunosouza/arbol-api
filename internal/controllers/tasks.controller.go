@@ -12,6 +12,7 @@ import (
 type TasksController interface {
 	UpdateTaskController(context echo.Context) error
 	MarkTaskAsFavoriteController(context echo.Context) error
+	CreateTaskController(context echo.Context) error
 }
 
 type controller struct {
@@ -63,6 +64,20 @@ func (controller *controller) MarkTaskAsFavoriteController(context echo.Context)
 
 	if controllerError := controller.service.MarkTaskAsFavoriteService(task); controllerError != nil {
 		return context.JSON(http.StatusNotFound, echo.Map{"error": "Registro inexistente"})
+	}
+
+	return context.JSON(http.StatusOK, task)
+}
+
+func (controller *controller) CreateTaskController(context echo.Context) error {
+	task := &entities.Task{}
+
+	if err := context.Bind(task); err != nil {
+		return context.JSON(http.StatusUnprocessableEntity, echo.Map{"error": "Não foi possível processar a estrutura de dados informada"})
+	}
+
+	if err := controller.service.CreateTaskService(task); err != nil {
+		return context.JSON(http.StatusNotFound, echo.Map{"error": err})
 	}
 
 	return context.JSON(http.StatusOK, task)
