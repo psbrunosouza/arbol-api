@@ -27,7 +27,11 @@ func NewTaskRepository(db *gorm.DB) *taskRepository {
 } 
 
 func (repository *taskRepository) UpdateTaskRepository(task *entities.Task) *gorm.DB {
-	return repository.db.Save(task)
+	if result := repository.db.Updates(task); result.Error != nil {
+		return result
+	}
+
+	return repository.db.Model(task).Where("id = ?", task.Default.Id).Update("is_favorite", task.IsFavorite)
 }
 
 func (repository *taskRepository) MarkTaskAsFavorite(task *entities.Task) *gorm.DB {

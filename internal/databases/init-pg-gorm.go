@@ -6,13 +6,14 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var Database *gorm.DB
 
 func InitPgGorm(entities ...interface{}) {
 	database, databaseError := gorm.Open(postgres.Open(os.Getenv("DATABASE_URL")), &gorm.Config{
-		//  Logger: logger.Default.LogMode(logger.Info),
+		 Logger: logger.Default.LogMode(logger.Info),
 	})
 	
 	if(databaseError != nil){

@@ -37,7 +37,11 @@ func (repository *iterationRepository) FindIterationRepository(iteration *entiti
 }
 
 func (repository *iterationRepository) DeleteIterationRepository(iteration *entities.Iteration) *gorm.DB {
-	return repository.db.Delete(iteration)
+	if result := repository.db.Delete(iteration); result.Error != nil {
+		return result
+	}
+
+	return repository.db.Model(&entities.Task{}).Where("iteration_id = ?", iteration.Default.Id).Update("deleted_at", iteration.Default.DeletedAt)
 }
 
 
