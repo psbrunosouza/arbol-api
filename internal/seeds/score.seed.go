@@ -24,15 +24,19 @@ func (scoreSeedDatabase *scoreSeedDatabase) ScoreSeed() error {
 	scores := []entities.Score{
 		{
 			Description: "very-easy",
+			Value: 0.25,
 		},
 		{
 			Description: "easy",
+			Value: 0.75,
 		},
 		{
 			Description: "dificult",
+			Value: 0.25,
 		},
 		{
 			Description: "very-dificult",
+			Value: 0.75,
 		},
 	}
 

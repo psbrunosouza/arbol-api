@@ -1,13 +1,10 @@
 package utils
 
-func GenerateEasinessFactor(lastEasinessFactor float64, lossFactor float64) float64 {
-	if (lastEasinessFactor * float64(lossFactor)) <= 0 {
-		return 1
-	} else {
-		return lastEasinessFactor * float64(lossFactor)
-	}
-}
+import "loop-notes-api/internal/entities"
 
-func CalculatePeriod(review int, easinessFactor float64) float64 {
-	return CalculatePeriod(review-1, easinessFactor) * easinessFactor
+func CalculatePeriod(review int, score entities.Score) float64 {
+	if review == 1 {
+		return 30
+	}
+	return CalculatePeriod(review-1, score) * score.Value
 }
