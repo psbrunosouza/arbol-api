@@ -6,7 +6,7 @@ import (
 
 type Task struct {
 	Default
-	Name           string     `json:"name,omitempty" gorm:"not null;default:null;type:varchar(255)"`
+	Name           string     `json:"name,omitempty" gorm:"not null;default:null;type:varchar(64)"`
 	Description    string     `json:"description,omitempty" gorm:"not null;default:null;type:varchar(255)"`
 	IsFavorite     bool       `json:"isFavorite" gorm:"default:false"`
 	IterationID    uint       `json:"iterationId,omitempty" gorm:"default:null;"`

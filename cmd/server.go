@@ -10,6 +10,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func init() {
@@ -29,6 +30,8 @@ func init() {
 
 func main() {
 	echo := echo.New()
+
+	echo.Use(middleware.CORS())
 	
 	api := echo.Group("/v1")
 
